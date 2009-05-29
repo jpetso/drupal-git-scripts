@@ -6,13 +6,13 @@
 # Make sure we where called correctly.
 CURRENT_GIT="$(git rev-parse --git-dir 2>/dev/null)" || exit 4 "** Must be called from within a git repository **"
 COMMIT_REF=$(git name-rev --name-only $1) || exit 5 "** Must provide a single, valid sha-1 commit id **"
-BRANCH=${COMMIT_REF/~[0-9]*/}
+BRANCH=${COMMIT_REF%~[0-9]*}
 
 # Include or general drupal sync config.
 . /etc/drupal_sync.conf
 
 # Figure out what our module name is.
-if [ "$CURRENT_GIT" == '.git' ]; then
+if [ "$CURRENT_GIT" = '.git' ]; then
   MODULE=`pwd | sed 's@/.*/@@'`
 else
   # TODO I think this is broken
